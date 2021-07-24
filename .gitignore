@@ -3,6 +3,10 @@ output/*
 .idea/*
 .idea
 _models/*
+output_1229/*
+images_1229/*
+posenet-python/*
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
