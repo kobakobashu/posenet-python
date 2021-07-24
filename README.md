@@ -1,69 +1,90 @@
-## PoseNet Python
+# posenet-python-gesture
 
-This repository contains a pure Python implementation (multi-pose only) of the Google TensorFlow.js Posenet model. For a (slightly faster) PyTorch implementation that followed from this, see (https://github.com/rwightman/posenet-pytorch)
+"posenet-python-gesture"は[posenet-python](https://github.com/rwightman/posenet-python)に追加することで、ジェスチャの認識を行います。
+ 
 
-I first adapted the JS code more or less verbatim and found the performance was low so made some vectorized numpy/scipy version of a few key functions (named `_fast`).
+# DEMO
+ボディービルダーのポーズを読み込んでテストを行いました。
 
-Further optimization is possible
-* The base MobileNet models have a throughput of 200-300 fps on a GTX 1080 Ti (or better)
-* The multi-pose post processing code brings this rate down significantly. With a fast CPU and a GTX 1080+:
-  * A literal translation of the JS post processing code dropped performance to approx 30fps
-  * My 'fast' post processing results in 90-110fps
-* A Cython or pure C++ port would be even better...  
+![ボディービルダー](https://user-images.githubusercontent.com/43237898/84505388-9763fa00-acf8-11ea-8dd5-cef46d328851.gif)
 
-### Install
+# Features
+ 
+好きな画像に対してジェスチャ認識ができます。
+ 
+# Requirement
 
-A suitable Python 3.x environment with a recent version of Tensorflow is required.
+[posenet-python](https://github.com/rwightman/posenet-python)に準拠します。
 
-Development and testing was done with Conda Python 3.6.8 and Tensorflow 1.12.0 on Linux.
+Tensorflowは1.x.xを使う必要があります。
 
-Windows 10 with the latest (as of 2019-01-19) 64-bit Python 3.7 Anaconda installer was also tested.
+私はOS X: 10.15.1、Python: 3.7.5で開発・テストを行いました。
 
-If you want to use the webcam demo, a pip version of opencv (`pip install opencv-python`) is required instead of the conda version. Anaconda's default opencv does not include ffpmeg/VideoCapture support. Also, you may have to force install version 3.4.x as 4.x has a broken drawKeypoints binding.
+> A suitable Python 3.x environment with a recent version of Tensorflow is required.
 
-A conda environment setup as below should suffice: 
-```
+> Development and testing was done with Conda Python 3.6.8 and Tensorflow 1.12.0 on Linux.
+
+> Windows 10 with the latest (as of 2019-01-19) 64-bit Python 3.7 Anaconda installer was also tested.
+
+> If you want to use the webcam demo, a pip version of opencv (pip install opencv-python) is required instead of the conda version. Anaconda's default opencv does not include ffpmeg/VideoCapture support. Also, you may have to force install version 3.4.x as 4.x has a broken drawKeypoints binding.
+ 
+> A conda environment setup as below should suffice:
+
+```bash
 conda install tensorflow-gpu scipy pyyaml python=3.6
 pip install opencv-python==3.4.5.20
-
 ```
 
-### Usage
+ 
+# Usage
+ 
+1. [posenet-python](https://github.com/rwightman/posenet-python)のダウンロード
 
-There are three demo apps in the root that utilize the PoseNet model. They are very basic and could definitely be improved.
+```
+git clone https://github.com/rwightman/posenet-python.git
+```
+2. [posenet-python-gesture](https://github.com/besuboiu/posenet-python-gesture)のダウンロード
 
-The first time these apps are run (or the library is used) model weights will be downloaded from the TensorFlow.js version and converted on the fly.
+```
+git clone https://github.com/rwightman/posenet-python.git
+```
 
-For all demos, the model can be specified with the '--model` argument by using its ordinal id (0-3) or integer depth multiplier (50, 75, 100, 101). The default is the 101 model.
+3. "posenet-python-gesture"の中身を全て、"posenet-python"ヘコピーする
 
-#### image_demo.py 
+```
+cp -pR posenet-python-gesture/* posenet-python/
+```
 
-Image demo runs inference on an input folder of images and outputs those images with the keypoints and skeleton overlayed.
+4. "posenet-python-gesture"へ移動してimagesファイルを作る
 
-`python image_demo.py --model 101 --image_dir ./images --output_dir ./output`
+```
+cd posenet-python
+mkdir images
+```
+5. 認識したいポーズ（全身）の人物画像ファイルをimagesに移動
 
-A folder of suitable test images can be downloaded by first running the `get_test_images.py` script.
+6. csvファイルの作成
 
-#### benchmark.py
+```
+python3 make_csv.py
+```
 
-A minimal performance benchmark based on image_demo. Images in `--image_dir` are pre-loaded and inference is run `--num_images` times with no drawing and no text output.
+7. demoの実行
 
-#### webcam_demo.py
+```
+python3 match_demo.py
+```
 
-The webcam demo uses OpenCV to capture images from a connected webcam. The result is overlayed with the keypoints and skeletons and rendered to the screen. The default args for the webcam_demo assume device_id=0 for the camera and that 1280x720 resolution is possible.
 
-### Credits
-
-The original model, weights, code, etc. was created by Google and can be found at https://github.com/tensorflow/tfjs-models/tree/master/posenet
-
+ 
+# Author
+ 
 This port and my work is in no way related to Google.
+ 
+* 作成者: besuboiu
+* E-mail: n.n.n.h.h.b.b.26@gmail.com
+ 
+# License
 
-The Python conversion code that started me on my way was adapted from the CoreML port at https://github.com/infocom-tpo/PoseNet-CoreML
-
-### TODO (someday, maybe)
-* More stringent verification of correctness against the original implementation
-* Performance improvements (especially edge loops in 'decode.py')
-* OpenGL rendering/drawing
-* Comment interfaces, tensor dimensions, etc
-* Implement batch inference for image_demo
-
+"posenet-python-gesture" is under Apache License.
+ 

@@ -45,8 +45,8 @@ def main():
 
         start = time.time()
         frame_count = 0
-        H = [0] * 510
-        H_score = [0] * 10
+        H = [0] * 255
+        H_score = [0] * 5
         while True:
             input_image, display_image, output_scale = posenet.read_cap(
                 cap, scale_factor=args.scale_factor, output_stride=output_stride)
@@ -109,19 +109,12 @@ def main():
 #            print(len(H))
             #print("len(H_csv)")
             #rint(len(H_csv))
-            """
-            #csvデータの作成
             H.append(2)
             with open("./data/sample.csv", 'a') as f:
                 writer = csv.writer(f)
                 writer.writerow(H)
             del H[-1]
-            print(H)
-            print(len(H))
             """
-            
-            """
-            # プロトタイプ
             if sum(H_score) == 5:
                 for i in range(4):
                     x_vec = H[i * 51 + 31] - H[(i + 1) * 51 + 31]
@@ -139,14 +132,89 @@ def main():
                 print("stop")
             #for time in range(4):
             """
+                
 
+#             leftShoulder_list.append(keypoint_coords[0,5,1],keypoint_coords[0,5,0])
+#             print(leftShoulder_list)
+#             rightShoulder_list.append(keypoint_coords[0,6,:])
+#             leftElbow_list.append(keypoint_coords[0,7,:])
+#             rightElbow_list.append(keypoint_coords[0,8,:])
+#             leftWrist_list.append(keypoint_coords[0,9,:])
+#             rightWrist_list.append(keypoint_coords[0,10,:])
+#             leftHip_list.append(keypoint_coords[0,11,:])
+#             rightHip_list.append(keypoint_coords[0,12,:])
+
+#             leftShoulder_list.pop(0)
+#             rightShoulder_list.pop(0)
+#             leftElbow_list.pop(0)
+#             rightElbow_list.pop(0)
+#             leftWrist_list.pop(0)
+#             rightWrist_list.pop(0)
+#             leftHip_list.pop(0)
+#             rightHip_list.pop(0)
+#             #print(keypoint_coords[0,5,:])
+#             #print(keypoint_scores[0, :][0])
+#             #print(len(keypoint_scores[0, :]))
+#             #print(pose_scores[0])
+#             #print(keypoint_coords[0,10,:])
+#             print("-----")
+            
+            #print(rightHip_list)
+            
+#             shoulder = (keypoint_coords[0,5,:]+keypoint_coords[0,6,:])/2
+#             hip = (keypoint_coords[0,11,:]+keypoint_coords[0,12,:])/2            
+#             vec_1 = keypoint_coords[0,7,:]-shoulder
+#             vec_2 = keypoint_coords[0,9,:]-keypoint_coords[0,7,:]
+#             vec_3 = keypoint_coords[0,8,:]-shoulder
+#             vec_4 = keypoint_coords[0,10,:]-keypoint_coords[0,8,:]
+#             vec_5 = hip-shoulder
+#             vec_6 = keypoint_coords[0,13,:]-hip
+#             vec_7 = keypoint_coords[0,15,:]-keypoint_coords[0,13,:]
+#             vec_8 = keypoint_coords[0,14,:]-hip
+#             vec_9 = keypoint_coords[0,16,:]-keypoint_coords[0,14,:]
+            
+#             slope_1 = vec_1[0]/vec_1[1]
+#             slope_2 = vec_2[0]/vec_2[1]
+#             slope_3 = vec_3[0]/vec_3[1]
+#             slope_4 = vec_4[0]/vec_4[1]
+#             slope_5 = vec_5[0]/vec_5[1]
+#             slope_6 = vec_6[0]/vec_6[1]
+#             slope_7 = vec_7[0]/vec_7[1]
+#             slope_8 = vec_8[0]/vec_8[1]
+#             slope_9 = vec_9[0]/vec_9[1]
+
+#             if -1<slope_1 and slope_1<1 and -1<slope_2 and slope_2<1 and -1<slope_3 and slope_3<1 and -1<slope_4 and slope_4<1 and vec_2[1]>0 and vec_4[1]<0:
+#                 print("T")
+#             elif -1<slope_1 and slope_1<1 and -1<slope_2 and slope_2<1 and -1<slope_3 and slope_3<1 and -1<slope_4 and slope_4<1 and vec_2[1]>0 and vec_4[1]>0:
+#                 if slope_7>1 or slope_7<-1:
+#                     if slope_9>1 or slope_9<-1:
+#                         print("J")
+#                 elif slope_7<1 and slope_7>-1 and slope_9<1 and slope_9>-1:
+#                     print("S")
+#             elif -1<slope_1 and slope_1<1 and -1<slope_2 and slope_2<1 and -1<slope_3 and slope_3<1 and -1<slope_4 and slope_4<1 and vec_2[1]<0 and vec_4[1]<0:
+#                 if slope_7>1 or slope_7<-1:
+#                     if slope_9>1 or slope_9<-1:
+#                         print("L")
+#                 elif slope_7<1 and slope_7>-1 and slope_9<1 and slope_9>-1:
+#                     print("Z")
+#             elif -1>slope_1 or slope_1>1:
+#                 if -1>slope_2 or slope_2>1:
+#                     if -1>slope_3 or slope_3>1:
+#                         if -1>slope_4 or slope_4>1:
+#                             if -1>slope_7 or slope_7>1:
+#                                 if -1>slope_9 or slope_9>1:
+#                                     print("I")
+#             else:
+#                 print("not I,T,J,S,L,Z")
+            
+            
             frame_count += 1
-            #print('Average FPS: ', frame_count / (time.time() - start))
+            print('Average FPS: ', frame_count / (time.time() - start))
             
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-        #print('Average FPS: ', frame_count / (time.time() - start))
+        print('Average FPS: ', frame_count / (time.time() - start))
 
 
 if __name__ == "__main__":
