@@ -1,0 +1,10 @@
+# @package _group_
+#
+# SimpleCNN
+
+name: LSTM
+pretrained: False
+input_size: 51
+hidden_dim: 128
+num_layers: 10
+output_size: 3

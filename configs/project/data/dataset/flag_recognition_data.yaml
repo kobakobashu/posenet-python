@@ -1,0 +1,9 @@
+# @package _group_
+#
+# cifar10 dataset
+
+name: flag_recognition_data
+#rootdir: /workspace/datasets
+classes: ['go forward', 'go forward a little', 'stop']
+num_class: 3
+num_train_samples: 2100

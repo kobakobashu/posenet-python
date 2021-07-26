@@ -2,6 +2,10 @@ import tensorflow as tf
 import cv2
 import time
 import argparse
+import torch
+from omegaconf import OmegaConf
+from models.networks.LSTM import LSTM
+import numpy as np
 
 import posenet
 
@@ -17,6 +21,13 @@ parser.add_argument('--cam_height', type=int, default=720)
 parser.add_argument('--scale_factor', type=float, default=0.7125)
 parser.add_argument('--file', type=str, default=None, help="Optionally use a video file instead of a live camera")
 args = parser.parse_args()
+
+
+cfg = OmegaConf.load('./configs/project/default.yaml')
+print(cfg)
+# cfg.model.initial_ckpt = "./model.pth"
+# cfg.model.embedder.initial_ckpt = "./embedder.pth"
+model = LSTM(cfg)
 
 
 def main():
@@ -97,6 +108,22 @@ def main():
             H.extend(h)
             H[0:51] = []
             H_score[0:1] = []
+            # print(len(H))
+
+            # for demo
+            x = []
+            x.append([H[i * 51 : (i+1) * 51] for i in range(10)])
+            x = torch.from_numpy(np.array(x)).float()
+            
+            outputs = model.network(x)
+            # print(outputs)
+            if outputs[0][1] <= outputs[0][0] and outputs[0][2] <= outputs[0][0]:
+                print("go forward")
+            elif outputs[0][0] <= outputs[0][1] and outputs[0][2] <= outputs[0][1]:
+                print("go forward a little")
+            else:
+                print("stop")
+
             #H_csv = H
             #H_csv.append(0)
             

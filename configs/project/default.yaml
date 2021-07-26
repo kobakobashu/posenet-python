@@ -1,0 +1,53 @@
+# Default project 
+
+# Import presets
+defaults:
+  - hydra/job_logging: custom
+  - data/dataset: flag_recognition_data
+  - data/sampler: shuffle_sampler
+  - train/trainer: default
+  - train/criterion: nll_loss
+  - train/metric: classification
+  - model: LSTM
+
+model:
+  name: LSTM
+  pretrained: False
+  input_size: 51
+  hidden_dim: 128
+  num_layers: 10
+  output_size: 3
+  initial_ckpt: best_ckpt.pth
+
+train:
+  criterion:
+    name: nll_loss
+  trainer:
+    name: default
+  metric:
+    name: classification
+  batch_size: 12
+  epochs: 300
+  save_best_ckpt: True
+  num_workers: 2
+  ckpt_path: best_ckpt.pth
+  eval: False
+  optimizer:
+    name: adam
+    lr: 0.001
+    # lr: 0.0001
+    decay: 0.0001
+
+data:
+  dataset:
+    name: flag_recognition_data
+    #rootdir: /workspace/datasets
+    classes: ['go forward', 'go forward a little', 'stop']
+    num_class: 3
+    num_train_samples: 2100
+  sampler:
+    name: shuffle_sampler
+
+# MLflow configs
+experiment:
+  name: Default
